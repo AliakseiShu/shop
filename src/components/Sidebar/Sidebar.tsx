@@ -2,9 +2,10 @@ import React from 'react';
 import {NavLink} from "react-router-dom";
 
 import {RootState, } from "../../features/store";
+import {useAppSelector} from "../../hook";
 
 import styles from '../../styles/Sidebar.module.css';
-import {useAppSelector} from "../../hook";
+
 
 export const Sidebar = () => {
     const {list} = useAppSelector((categories: RootState) => categories.categories)

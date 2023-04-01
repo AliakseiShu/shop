@@ -8,7 +8,7 @@ export const apiSlice = createApi({
     baseQuery: fetchBaseQuery({baseUrl: BASE_URL}),
     tagTypes: ['Product'],
     endpoints: (builder) => ({
-        getProduct: builder.query<IProduct[], string>({
+        getProduct: builder.query<IProduct, string |  undefined>({
             query: (id) => `/products/${id}`,
             providesTags: ["Product"]
         })
