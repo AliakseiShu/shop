@@ -3,23 +3,23 @@ import axios from "axios";
 
 import {BASE_URL} from "../../utils/constants";
 
-export interface CategoryType {
+export interface ICategory {
     id: number,
     name: string,
     image: string
 }
 
-export interface CategoriesSliceType {
-    list: CategoryType[]
+export interface ICategoriesSlice {
+    list: ICategory[]
     isLoading: boolean
 }
 
-const initialState: CategoriesSliceType = {
+const initialState: ICategoriesSlice = {
     list: [],
     isLoading: false
 }
 
-export const getCategories = createAsyncThunk(
+export const getCategories = createAsyncThunk<ICategory[]>(
     'categories/getCategories',
     async (_, thunkAPI) => {
         try {
@@ -31,7 +31,7 @@ export const getCategories = createAsyncThunk(
         }
     })
 
-const categorieSlice = createSlice({
+const categoriesSlice = createSlice({
     name: 'categories',
     initialState,
     reducers: {},
@@ -50,4 +50,4 @@ const categorieSlice = createSlice({
     }
 })
 
-export default categorieSlice.reducer
+export default categoriesSlice.reducer

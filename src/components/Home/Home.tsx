@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from "../../features/store";
 
+import {useAppDispatch, useAppSelector} from "../../hook";
 import {filterByPrice} from "../../features/products/productsSlice";
 
 import {Poster} from "../Poster/Poster";

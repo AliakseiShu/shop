@@ -4,7 +4,6 @@ import styles from '../../styles/Home.module.css';
 
 import BG from '../../images/computer.png';
 
-
 export const Poster = () => {
     return (
         <section className={styles.home}>

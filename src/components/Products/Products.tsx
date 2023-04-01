@@ -1,16 +1,16 @@
 import React, {FC} from 'react';
+import {Link} from "react-router-dom";
 
 import styles from '../../styles/Products.module.css';
 
-import {CategoryType} from "../../features/categories/categoriesSlice";
-import {Link} from "react-router-dom";
+import {ICategory} from "../../features/categories/categoriesSlice";
 
 export interface ProductType {
     id: number,
     title: string,
     price: number,
     description: string,
-    category: CategoryType,
+    category: ICategory,
     images: string[]
 }
 
@@ -24,7 +24,7 @@ export interface ProductsType {
 export const Products: FC<ProductsType> = ({title, products, style, amount}) => {
     const list = products.filter((_, i) => i < amount)
     return (
-        <section className={styles.products} style={{}}>
+        <section className={styles.products}>
             {title && <h2>{title}</h2>}
             <div className={styles.list}>
                 {list.map(({id, images, title, category:{name:cat}, price}) => (
@@ -42,7 +42,7 @@ export const Products: FC<ProductsType> = ({title, products, style, amount}) => 
                                         {Math.floor(price * 0.8)}$</div>
                                 </div>
                             </div>
-                            <div className={styles.purchases}>{Math.floor(Math.random()* 20 + 1)} purchased</div>
+                            <div className={styles.purchases}>{Math.floor(Math.random() * 20 + 1)} purchased</div>
                         </div>
                     </Link>
                 ))}
