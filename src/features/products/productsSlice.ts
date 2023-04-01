@@ -2,10 +2,10 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import axios from "axios";
 
 import {BASE_URL} from "../../utils/constants";
-import {ProductType} from "../../components/Products/Products";
+import {IProduct} from "../../components/Products/Products";
 
 export interface ProductsSlice {
-    list: ProductType[]
+    list: IProduct[]
      filtered: any
     // related: any
     isLoading: boolean

@@ -5,7 +5,7 @@ import styles from '../../styles/Products.module.css';
 
 import {ICategory} from "../../features/categories/categoriesSlice";
 
-export interface ProductType {
+export interface IProduct {
     id: number,
     title: string,
     price: number,
@@ -16,7 +16,7 @@ export interface ProductType {
 
 export interface ProductsType {
     title: string
-    products: ProductType[]
+    products: IProduct[]
     style: string
     amount: number
 }

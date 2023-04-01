@@ -8,7 +8,7 @@ import {useAppSelector} from "../../hook";
 
 export const Sidebar = () => {
     const {list} = useAppSelector((categories: RootState) => categories.categories)
-    console.log('list', list)
+    //console.log('list', list)
     return (
         <section className={styles.sidebar}>
             <div className={styles.title}>CATEGORIES</div>
