@@ -10,12 +10,11 @@ import {getRelatedProducts} from "../../features/products/productsSlice";
 
 export const SingleProduct = () => {
     const dispatch = useAppDispatch()
-    const {related} = useAppSelector(({products}) => products)
+    const {related, list} = useAppSelector(({products}) => products)
     const {id} = useParams()
     const navigate = useNavigate()
 
     const {data, isLoading, isFetching, isSuccess} = useGetProductQuery(id)
-    console.log(data)
 
     useEffect(() => {
         if (!isFetching && !isLoading && !isSuccess) {
@@ -24,11 +23,11 @@ export const SingleProduct = () => {
     }, [isLoading, isFetching, isSuccess]);
 
     useEffect(() => {
-        console.log('getRelatedProducts')
+        if (!data || !list.length) return
         if (data) {
             dispatch(getRelatedProducts(data.category.id))
         }
-    }, [dispatch, data]);
+    }, [dispatch, data, list.length]);
 
     return (
         !data ? (<section className="preloader">Loading</section>)
