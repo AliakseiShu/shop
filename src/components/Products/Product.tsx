@@ -1,20 +1,31 @@
 import React, {FC, useEffect, useState} from 'react';
+import {Link} from "react-router-dom";
 
 import styles from '../../styles/Product.module.css';
+
 import {IProduct} from "./Products";
-import {Link} from "react-router-dom";
 import {ROUTES} from "../../utils/routes";
+import {useAppDispatch} from "../../hook";
+import {addItemToCart} from "../../features/user/userSlice";
 
 const SIZES = [4, 4.5, 5]
 
-export const Product: FC<IProduct> = ({images, title, price, description}) => {
+export const Product: FC<IProduct> = (item) => {
+    const {images, title, price, description} = item
+    const dispatch = useAppDispatch()
 
-    const [currentImage, setCurrentImage] = useState(images[0]);
+    const [currentImage, setCurrentImage] = useState<string>(images[0]);
+    const [currentSize, setCurrentSize] = useState<number>(0);
 
     useEffect(() => {
         if(!images.length) return
         setCurrentImage(images[0])
-    }, [images]);
+    }, [images,currentSize]);
+
+    const addToProduct = () => {
+       dispatch(addItemToCart(item))
+
+    }
 
     return (
         <section className={styles.product}>
@@ -38,8 +49,7 @@ export const Product: FC<IProduct> = ({images, title, price, description}) => {
 
                     <div className={styles.list}>
                         {SIZES.map((size) => (
-                            <div onClick={() => {
-                            }} className={`${styles.size}`} key={size}>
+                            <div onClick={() => setCurrentSize(size)} className={`${styles.size} ${currentSize === size ? styles.active : ''}`} key={size}>
                                 {size}
                             </div>
                         ))}
@@ -47,8 +57,8 @@ export const Product: FC<IProduct> = ({images, title, price, description}) => {
                 </div>
                 <p className={styles.description}>{description}</p>
                 <div className={styles.actions}>
-                    <button className={styles.add}>Add to cart</button>
-                    <button className={styles.favourite}>Add to favourite</button>
+                    <button className={styles.add} disabled={!currentSize} onClick={addToProduct}>Add to cart</button>
+                    <button className={styles.favourite} disabled={!currentSize}>Add to favourite</button>
                 </div>
                 <div className={styles.bottom}>
                     <div>10 people purchased</div>

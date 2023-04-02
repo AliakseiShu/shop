@@ -12,6 +12,7 @@ export interface IProduct {
     description: string,
     category: ICategory,
     images: string[]
+    quantity: number
 }
 
 export interface ProductsType {
