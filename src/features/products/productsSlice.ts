@@ -3,18 +3,19 @@ import axios from "axios";
 
 import {BASE_URL} from "../../utils/constants";
 import {IProduct} from "../../components/Products/Products";
+import {shuffle} from "../../utils/common";
 
 export interface ProductsSlice {
     list: IProduct[]
-     filtered: any
-    // related: any
+    filtered: IProduct[]
+    related: any
     isLoading: boolean
 }
 
 const initialState: ProductsSlice = {
     list: [],
     filtered: [],
-    // related: [],
+    related: [],
     isLoading: false
 }
 
@@ -36,6 +37,10 @@ const productsSlice = createSlice({
     reducers: {
         filterByPrice: (state, {payload}) => {
             state.filtered = state.list.filter(({price}) => price < payload)
+        },
+        getRelatedProducts: (state, {payload}) => {
+            const list = state.list.filter(({category: {id}}) => id === payload)
+            state.related = shuffle(list)
         }
     },
     extraReducers: (builder) => {
@@ -53,6 +58,6 @@ const productsSlice = createSlice({
     }
 })
 
-export const {filterByPrice} = productsSlice.actions
+export const {filterByPrice, getRelatedProducts} = productsSlice.actions
 
 export default productsSlice.reducer

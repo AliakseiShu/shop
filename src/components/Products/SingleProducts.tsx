@@ -4,8 +4,13 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useGetProductQuery} from "../../features/api/apiSlice";
 import {ROUTES} from "../../utils/routes";
 import {Product} from "./Product";
+import {Products} from "./Products";
+import {useAppDispatch, useAppSelector} from "../../hook";
+import {getRelatedProducts} from "../../features/products/productsSlice";
 
 export const SingleProduct = () => {
+    const dispatch = useAppDispatch()
+    const {related} = useAppSelector(({products}) => products)
     const {id} = useParams()
     const navigate = useNavigate()
 
@@ -18,11 +23,23 @@ export const SingleProduct = () => {
         }
     }, [isLoading, isFetching, isSuccess]);
 
+    useEffect(() => {
+        console.log('getRelatedProducts')
+        if (data) {
+            dispatch(getRelatedProducts(data.category.id))
+        }
+    }, [dispatch, data]);
+
     return (
         !data ? (<section className="preloader">Loading</section>)
-              : (
+            : (
                 <React.Fragment>
                     <Product {...data}/>
+                    <Products
+                        products={related}
+                        title="Related products"
+                        style={''}
+                        amount={5}/>
                 </React.Fragment>)
     );
 };
