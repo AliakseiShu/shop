@@ -23,7 +23,7 @@ export const Footer = () => {
                    target="_blank"
                    rel="noreferrer"
                 >
-                    Aliksei Shulha
+                    Aliaksei Shulha
                 </a>
             </div>
             <div className={styles.socials}>
