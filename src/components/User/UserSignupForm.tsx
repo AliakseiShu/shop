@@ -1,7 +1,9 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, FC, useState} from 'react';
 
 import styles from '../../styles/User.module.css';
 import {RiCloseFill} from "@react-icons/all-files/ri/RiCloseFill";
+import {useAppDispatch} from "../../hook";
+import {toggleForm} from "../../features/user/userSlice";
 
 type ValuesType = {
     name: string,
@@ -10,7 +12,10 @@ type ValuesType = {
     avatar: string
 }
 
-export const UserSignupForm = () => {
+type UserSignupFormType = {
+    onCloseForm: () => void
+}
+export const UserSignupForm:FC<UserSignupFormType> = ({onCloseForm}) => {
     const [values, setValues] = useState<ValuesType>({
         name: '',
         email: '',
@@ -29,7 +34,7 @@ export const UserSignupForm = () => {
     return (
         <div className={styles.wrapper}>
             <div className={styles.close}>
-                <svg className="icon">
+                <svg onClick={onCloseForm} className="icon">
                     <RiCloseFill/>
                 </svg>
             </div>

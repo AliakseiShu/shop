@@ -13,7 +13,7 @@ export interface IUser {
 }
 
 export interface ICategoriesSlice {
-    currentUser: IUser[]
+    currentUser: null | IUser[]
     cart: IProduct[]
     isLoading: boolean
     formType: string
@@ -21,7 +21,7 @@ export interface ICategoriesSlice {
 }
 
 const initialState: ICategoriesSlice = {
-    currentUser: {} as IUser[],
+    currentUser: null,
     cart: [],
     isLoading: false,
     formType: "signup",
