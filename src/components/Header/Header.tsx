@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 
 import {BsSearch} from "@react-icons/all-files/bs/BsSearch";
@@ -13,14 +13,29 @@ import styles from '../../styles/Header.module.css';
 import LOGO from "../../images/logo.svg"
 import AVATAR from "../../images/avatar.jpg"
 import {toggleForm} from "../../features/user/userSlice";
-
+import {ValuesType} from "../User/UserSignupForm";
 
 export const Header = () => {
     const dispatch = useAppDispatch()
     const {currentUser} = useAppSelector(({user}) => user)
 
+    const [values, setValues] = useState<ValuesType>({
+        name: 'Guest',
+        email: '',
+        password: '',
+        avatar: AVATAR
+
+    });
+    console.log(values)
+
+    useEffect(() => {
+        if (!currentUser) return
+        currentUser && setValues(currentUser)
+    }, [currentUser]);
+
+
     const handleClick = () => {
-        if (!currentUser ) dispatch(toggleForm(true))
+        if (!currentUser) dispatch(toggleForm(true))
     }
     return (
         <div className={styles.header}>
@@ -31,8 +46,8 @@ export const Header = () => {
             </div>
             <div className={styles.info}>
                 <div className={styles.user} onClick={handleClick}>
-                    <div className={styles.avatar} style={{backgroundImage: `url(${AVATAR})`}}/>
-                    <div className={styles.username}>Guest</div>
+                    <div className={styles.avatar} style={{backgroundImage: `url(${values.avatar})`}}/>
+                    <div className={styles.username}>{values.name}</div>
                 </div>
 
                 <form className={styles.form}>

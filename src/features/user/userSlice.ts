@@ -14,7 +14,7 @@ export interface IUser {
 }
 
 export interface ICategoriesSlice {
-    currentUser: null | IUser[]
+    currentUser: null | ValuesType
     cart: IProduct[]
     isLoading: boolean
     formType: string
