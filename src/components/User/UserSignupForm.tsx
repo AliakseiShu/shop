@@ -1,11 +1,11 @@
-import React, {ChangeEvent, FC, useState} from 'react';
+import React, {ChangeEvent, FC, FormEvent, useState} from 'react';
 
 import styles from '../../styles/User.module.css';
 import {RiCloseFill} from "@react-icons/all-files/ri/RiCloseFill";
 import {useAppDispatch} from "../../hook";
-import {toggleForm} from "../../features/user/userSlice";
+import {createUser} from "../../features/user/userSlice";
 
-type ValuesType = {
+export type ValuesType = {
     name: string,
     email: string,
     password: string,
@@ -15,7 +15,8 @@ type ValuesType = {
 type UserSignupFormType = {
     onCloseForm: () => void
 }
-export const UserSignupForm:FC<UserSignupFormType> = ({onCloseForm}) => {
+export const UserSignupForm: FC<UserSignupFormType> = ({onCloseForm}) => {
+    const dispatch = useAppDispatch()
     const [values, setValues] = useState<ValuesType>({
         name: '',
         email: '',
@@ -23,12 +24,20 @@ export const UserSignupForm:FC<UserSignupFormType> = ({onCloseForm}) => {
         avatar: ''
     })
 
-    const handleChange = (e:ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setValues({
             ...values,
             [e.target.name]: value
         })
+    }
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        const isNotEmpty = Object.values(values).some(val => !val)
+        if(isNotEmpty) return
+        dispatch(createUser(values))
+        onCloseForm()
     }
 
     return (
@@ -41,14 +50,15 @@ export const UserSignupForm:FC<UserSignupFormType> = ({onCloseForm}) => {
             <div className={styles.title}>
                 Sing Up
             </div>
-            <form className={styles.form}>
+            <form className={styles.form} onSubmit={handleSubmit}>
                 <div className={styles.group}>
                     <input type="email"
                            placeholder="Your email"
                            name="email"
                            value={values.email}
                            autoComplete="off"
-                           onChange={handleChange}/>
+                           onChange={handleChange}
+                           required/>
                 </div>
                 <div className={styles.group}>
                     <input type="name"
@@ -56,7 +66,8 @@ export const UserSignupForm:FC<UserSignupFormType> = ({onCloseForm}) => {
                            name="name"
                            value={values.name}
                            autoComplete="off"
-                           onChange={handleChange}/>
+                           onChange={handleChange}
+                           required/>
                 </div>
                 <div className={styles.group}>
                     <input type="password"
@@ -64,7 +75,8 @@ export const UserSignupForm:FC<UserSignupFormType> = ({onCloseForm}) => {
                            name="password"
                            value={values.password}
                            autoComplete="off"
-                           onChange={handleChange}/>
+                           onChange={handleChange}
+                           required/>
                 </div>
                 <div className={styles.group}>
                     <input type="avatar"
@@ -72,7 +84,8 @@ export const UserSignupForm:FC<UserSignupFormType> = ({onCloseForm}) => {
                            name="avatar"
                            value={values.avatar}
                            autoComplete="off"
-                           onChange={handleChange}/>
+                           onChange={handleChange}
+                           required/>
                 </div>
                 <div className={styles.link}>
                     I already have an account

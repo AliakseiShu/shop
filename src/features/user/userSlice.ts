@@ -2,6 +2,7 @@ import {createAsyncThunk, createSlice} from "@reduxjs/toolkit";
 import {IProduct} from "../../components/Products/Products";
 import axios from "axios";
 import {BASE_URL} from "../../utils/constants";
+import {ValuesType} from "../../components/User/UserSignupForm";
 
 export interface IUser {
     id: number,
@@ -28,9 +29,9 @@ const initialState: ICategoriesSlice = {
     showForm: false
 }
 
-export const createUser = createAsyncThunk<IUser[]>(
+export const createUser = createAsyncThunk(
     'users/createUser',
-    async (payload, thunkAPI) => {
+    async (payload:ValuesType, thunkAPI) => {
         try {
             const res = await axios.post(`${BASE_URL}/users`, payload)
             return res.data
