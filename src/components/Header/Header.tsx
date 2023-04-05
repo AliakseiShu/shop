@@ -6,13 +6,12 @@ import {AiTwotoneHeart} from "@react-icons/all-files/ai/AiTwotoneHeart";
 import {BiCart} from "@react-icons/all-files/bi/BiCart";
 
 import {useAppDispatch, useAppSelector} from "../../hook";
+import {toggleForm} from "../../features/user/userSlice";
 import {ROUTES} from "../../utils/routes";
 
 import styles from '../../styles/Header.module.css';
-
 import LOGO from "../../images/logo.svg"
 import AVATAR from "../../images/avatar.jpg"
-import {toggleForm} from "../../features/user/userSlice";
 import {ValuesType} from "../User/UserSignupForm";
 
 export const Header = () => {
@@ -30,7 +29,7 @@ export const Header = () => {
 
     useEffect(() => {
         if (!currentUser) return
-        currentUser && setValues(currentUser)
+       setValues(currentUser)
     }, [currentUser]);
 
 
