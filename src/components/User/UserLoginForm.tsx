@@ -3,26 +3,22 @@ import React, {ChangeEvent, FC, FormEvent, useState} from 'react';
 import styles from '../../styles/User.module.css';
 import {RiCloseFill} from "@react-icons/all-files/ri/RiCloseFill";
 import {useAppDispatch} from "../../hook";
-import {createUser} from "../../features/user/userSlice";
+import {authUser} from "../../features/user/userSlice";
 
-export type ValuesType = {
-    name: string,
+export type ValuesLoginType = {
     email: string,
     password: string,
-    avatar: string
 }
 
 type UserSignupFormType = {
     onCloseForm: () => void
     toggleCurrentFormType: (type:string) => void
 }
-export const UserSignupForm: FC<UserSignupFormType> = ({onCloseForm, toggleCurrentFormType}) => {
+export const UserLoginForm: FC<UserSignupFormType> = ({onCloseForm, toggleCurrentFormType}) => {
     const dispatch = useAppDispatch()
-    const [values, setValues] = useState<ValuesType>({
-        name: '',
+    const [values, setValues] = useState<ValuesLoginType>({
         email: '',
-        password: '',
-        avatar: ''
+        password: ''
     })
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -36,8 +32,8 @@ export const UserSignupForm: FC<UserSignupFormType> = ({onCloseForm, toggleCurre
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const isNotEmpty = Object.values(values).some(val => !val)
-        if (isNotEmpty) return
-        dispatch(createUser(values))
+        if(isNotEmpty) return
+        dispatch(authUser(values))
         onCloseForm()
     }
 
@@ -62,15 +58,6 @@ export const UserSignupForm: FC<UserSignupFormType> = ({onCloseForm, toggleCurre
                            required/>
                 </div>
                 <div className={styles.group}>
-                    <input type="name"
-                           placeholder="Your name"
-                           name="name"
-                           value={values.name}
-                           autoComplete="off"
-                           onChange={handleChange}
-                           required/>
-                </div>
-                <div className={styles.group}>
                     <input type="password"
                            placeholder="Your password"
                            name="password"
@@ -79,22 +66,13 @@ export const UserSignupForm: FC<UserSignupFormType> = ({onCloseForm, toggleCurre
                            onChange={handleChange}
                            required/>
                 </div>
-                <div className={styles.group}>
-                    <input type="avatar"
-                           placeholder="Your avatar"
-                           name="avatar"
-                           value={values.avatar}
-                           autoComplete="off"
-                           onChange={handleChange}
-                           required/>
-                </div>
                 <div onClick={() => {
-                    toggleCurrentFormType("login")
+                    toggleCurrentFormType("signup")
                 }} className={styles.link}>
-                    I already have an account
+                    Create an account
                 </div>
                 <button type="submit" className={styles.submit}>
-                    Create an account
+                    Login
                 </button>
             </form>
         </div>
