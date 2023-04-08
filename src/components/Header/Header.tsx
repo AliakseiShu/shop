@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 import {BsSearch} from "@react-icons/all-files/bs/BsSearch";
 import {AiTwotoneHeart} from "@react-icons/all-files/ai/AiTwotoneHeart";
@@ -16,9 +16,12 @@ import {ValuesType} from "../User/UserSignupForm";
 
 export const Header = () => {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate()
+
     const {currentUser} = useAppSelector(({user}) => user)
 
     const [values, setValues] = useState<ValuesType>({
+        id: '',
         name: 'Guest',
         email: '',
         password: '',
@@ -30,9 +33,9 @@ export const Header = () => {
        setValues(currentUser)
     }, [currentUser]);
 
-
     const handleClick = () => {
         if (!currentUser) dispatch(toggleForm(true))
+        else navigate(ROUTES.PROFILE)
     }
     return (
         <div className={styles.header}>

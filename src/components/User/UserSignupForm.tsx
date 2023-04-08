@@ -6,6 +6,7 @@ import {useAppDispatch} from "../../hook";
 import {createUser} from "../../features/user/userSlice";
 
 export type ValuesType = {
+    id:string
     name: string,
     email: string,
     password: string,
@@ -19,6 +20,7 @@ type UserSignupFormType = {
 export const UserSignupForm: FC<UserSignupFormType> = ({onCloseForm, toggleCurrentFormType}) => {
     const dispatch = useAppDispatch()
     const [values, setValues] = useState<ValuesType>({
+        id:'',
         name: '',
         email: '',
         password: '',
