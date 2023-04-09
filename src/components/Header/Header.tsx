@@ -10,6 +10,7 @@ import {toggleForm} from "../../features/user/userSlice";
 import {ROUTES} from "../../utils/routes";
 
 import styles from '../../styles/Header.module.css';
+
 import LOGO from "../../images/logo.svg"
 import AVATAR from "../../images/avatar.jpg"
 import {ValuesType} from "../User/UserSignupForm";
