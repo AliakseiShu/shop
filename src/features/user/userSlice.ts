@@ -32,9 +32,10 @@ const initialState: ICategoriesSlice = {
 
 export const createUser = createAsyncThunk(
     'users/createUser',
-    async (payload:ValuesType, thunkAPI) => {
+    async (payload: ValuesType, thunkAPI) => {
         try {
             const res = await axios.post(`${BASE_URL}/users`, payload)
+            console.log('2')
             return res.data
         } catch (err) {
             console.log(err)
@@ -44,10 +45,10 @@ export const createUser = createAsyncThunk(
 
 export const authUser = createAsyncThunk(
     'users/auth',
-    async (payload:ValuesLoginType, thunkAPI) => {
+    async (payload: ValuesLoginType, thunkAPI) => {
         try {
             const res = await axios.post(`${BASE_URL}/auth/login`, payload)
-            const login = await axios.get(`${BASE_URL}/auth/profile`,{
+            const login = await axios.get(`${BASE_URL}/auth/profile`, {
                 headers: {
                     "Authorization": `Bearer ${res.data.access_token}`
                 }
@@ -61,7 +62,7 @@ export const authUser = createAsyncThunk(
 
 export const updateUser = createAsyncThunk(
     'users/updateUser',
-    async (payload:ValuesType, thunkAPI) => {
+    async (payload: ValuesType, thunkAPI) => {
         try {
             const res = await axios.put(`${BASE_URL}/users/${payload.id}`, payload)
             return res.data
