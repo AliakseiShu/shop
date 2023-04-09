@@ -13,6 +13,7 @@ import styles from '../../styles/Header.module.css';
 import LOGO from "../../images/logo.svg"
 import AVATAR from "../../images/avatar.jpg"
 import {ValuesType} from "../User/UserSignupForm";
+import {useGetProductsQuery} from "../../features/api/apiSlice";
 
 export const Header = () => {
     const dispatch = useAppDispatch()
@@ -29,9 +30,12 @@ export const Header = () => {
         avatar: AVATAR
     });
 
+    const {data, isLoading} = useGetProductsQuery({title: searchValue})
+    console.log(data)
+
     useEffect(() => {
         if (!currentUser) return
-       setValues(currentUser)
+        setValues(currentUser)
     }, [currentUser]);
 
     const handleClick = () => {
@@ -68,7 +72,18 @@ export const Header = () => {
                                onChange={handleSearch}
                                value={searchValue}/>
                     </div>
-                    {false && <div className={styles.box}></div>}
+                    {searchValue && <div className={styles.box}>
+                        {isLoading ? 'Loading' : !data?.length ? "No results" : data.map(({title, images, id}) => {
+                            return (
+                                <Link key={id} onClick={()=>setSearchValue('')} className={styles.item} to={`/products/${id}`}>
+                                    <div className={styles.image} style={{ backgroundImage:`url(${images[0]})`}}/>
+                                    <div className={styles.title}>
+                                        {title}
+                                    </div>
+                                </Link>
+                            )
+                        })}
+                    </div>}
 
                 </form>
                 <div className={styles.account}>
