@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom";
 
 import {BsSearch} from "@react-icons/all-files/bs/BsSearch";
@@ -20,6 +20,7 @@ export const Header = () => {
 
     const {currentUser} = useAppSelector(({user}) => user)
 
+    const [searchValue, setSearchValue] = useState('');
     const [values, setValues] = useState<ValuesType>({
         id: '',
         name: 'Guest',
@@ -37,6 +38,11 @@ export const Header = () => {
         if (!currentUser) dispatch(toggleForm(true))
         else navigate(ROUTES.PROFILE)
     }
+
+    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(e.target.value)
+    }
+
     return (
         <div className={styles.header}>
             <div className={styles.logo}>
@@ -59,9 +65,8 @@ export const Header = () => {
                                name="search"
                                placeholder="Search..."
                                autoComplete="off"
-                               onChange={() => {
-                               }}
-                               value=""/>
+                               onChange={handleSearch}
+                               value={searchValue}/>
                     </div>
                     {false && <div className={styles.box}></div>}
 

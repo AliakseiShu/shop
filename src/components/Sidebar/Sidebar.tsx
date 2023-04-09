@@ -6,10 +6,8 @@ import {useAppSelector} from "../../hook";
 
 import styles from '../../styles/Sidebar.module.css';
 
-
 export const Sidebar = () => {
     const {list} = useAppSelector((categories: RootState) => categories.categories)
-    //console.log('list', list)
     return (
         <section className={styles.sidebar}>
             <div className={styles.title}>CATEGORIES</div>

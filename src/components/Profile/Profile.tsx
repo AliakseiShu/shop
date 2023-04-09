@@ -32,7 +32,7 @@ export const Profile = () => {
     }
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const isNotEmpty = Object.values(values).some(val => !val)
+        const isNotEmpty = Object.values(values).every(val => val)
         if (!isNotEmpty) return
         dispatch(updateUser(values))
     }
