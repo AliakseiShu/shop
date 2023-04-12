@@ -4,7 +4,7 @@ import axios from "axios";
 import {BASE_URL} from "../../utils/constants";
 
 export interface ICategory {
-    id: number,
+    id: string,
     name: string,
     image: string
 }

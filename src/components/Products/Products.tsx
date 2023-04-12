@@ -18,11 +18,11 @@ export interface IProduct {
 export interface ProductsType {
     title: string
     products: IProduct[]
-    style: string
+    style?: {}
     amount: number
 }
 
-export const Products: FC<ProductsType> = ({title, products, style, amount}) => {
+export const Products: FC<ProductsType> = ({title, products,  amount}) => {
     const list = products.filter((_, i) => i < amount)
     return (
         <section className={styles.products}>

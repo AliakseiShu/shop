@@ -1,10 +1,11 @@
 import React, {useEffect} from 'react';
 import {useNavigate, useParams} from "react-router-dom";
 
-import {useGetProductQuery} from "../../features/api/apiSlice";
-import {ROUTES} from "../../utils/routes";
 import {Product} from "./Product";
 import {Products} from "./Products";
+
+import {useGetProductQuery} from "../../features/api/apiSlice";
+import {ROUTES} from "../../utils/routes";
 import {useAppDispatch, useAppSelector} from "../../hook";
 import {getRelatedProducts} from "../../features/products/productsSlice";
 
@@ -15,6 +16,7 @@ export const SingleProduct = () => {
     const navigate = useNavigate()
 
     const {data, isLoading, isFetching, isSuccess} = useGetProductQuery(id)
+
 
     useEffect(() => {
         if (!isFetching && !isLoading && !isSuccess) {

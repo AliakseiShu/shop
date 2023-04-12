@@ -32,7 +32,6 @@ export const Header = () => {
     });
 
     const {data, isLoading} = useGetProductsQuery({title: searchValue})
-    console.log(data)
 
     useEffect(() => {
         if (!currentUser) return
