@@ -37,6 +37,7 @@ export const Category = () => {
         ...defaultValues,
     }
 
+    const [isEnd, setIsEnd] = useState(false)
     const [cat, setCat] = useState("")
     const [items, setItems] = useState<IProduct[]>([])
     const [values, setValues] = useState<DefaultValuesType>(defaultValues)
@@ -46,6 +47,9 @@ export const Category = () => {
 
     useEffect(() => {
         if (!newId) return
+        setValues(defaultValues)
+        setItems([])
+        setIsEnd(false)
         setParams({...defaultParams, categoryId: newId})
     }, [newId]);
 
@@ -56,10 +60,10 @@ export const Category = () => {
     }, [list, id]);
 
     useEffect(() => {
-        if (isLoading || !data.length) return
+        if (isLoading) return
+        if (!data.length) return setIsEnd(true)
         setItems((_items: any) => [..._items, ...data])
     }, [data, isLoading]);
-    console.log("items",items)
 
     const handleChange = (e: ChangeEvent<HTMLInputElement> | any) => {
         const {target: {name, value}} = e
@@ -68,29 +72,42 @@ export const Category = () => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        setParams({...params, ...values})
+        setItems([])
+        setIsEnd(false)
+        setParams({...defaultParams, ...values})
     }
     return (
         <section className={styles.wrapper}>
             <h2 className={styles.title}>{cat}</h2>
             <form className={styles.filters} onSubmit={handleSubmit}>
                 <div className={styles.filter}>
-                    <input type="text" name="title" onChange={handleChange} placeholder="Product name"
+                    <input type="text"
+                           name="title"
+                           onChange={handleChange}
+                           placeholder="Product name"
                            value={values.title}/>
                 </div>
                 <div className={styles.filter}>
-                    <input type="number" name="price_min" onChange={handleChange} placeholder="0"
+                    <input type="number"
+                           name="price_min"
+                           onChange={handleChange}
+                           placeholder="0"
                            value={values.price_min}/>
+                    <span>Price from</span>
                 </div>
                 <div className={styles.filter}>
-                    <input type="number" name="price_max" onChange={handleChange} placeholder="0"
+                    <input type="number"
+                           name="price_max"
+                           onChange={handleChange}
+                           placeholder="0"
                            value={values.price_max}/>
+                    <span>Price to</span>
                 </div>
                 <button type="submit" hidden/>
             </form>
             {isLoading ? (
                 <div className="preloader">Loading...</div>
-            ) : !isSuccess || !data?.length ? (
+            ) : !isSuccess || !items?.length ? (
                 <div className={styles.back}>
                     <span>No results</span>
                     <button>Reset</button>
@@ -99,11 +116,11 @@ export const Category = () => {
                           products={items}
                           style={{padding: 0}}
                           amount={items.length}/>}
-            <div className={styles.more}>
+            {!isEnd &&  <div className={styles.more}>
                 <button onClick={() => setParams({...params, offset: params.offset + params.limit})}>
                     See more
                 </button>
-            </div>
+            </div> }
         </section>
     );
 };
