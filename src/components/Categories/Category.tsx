@@ -18,7 +18,7 @@ type DefaultValuesType = {
 export const Category = () => {
     const {id} = useParams()
 
-    console.log(id)
+ let newId = (id?.replace(/[^0-9]/g,""))
 
     const defaultValues = {
         title: '',
@@ -27,7 +27,7 @@ export const Category = () => {
     }
 
     const defaultParams = {
-        categoryId: id,
+        categoryId: newId,
         ...defaultValues,
     }
 
@@ -35,9 +35,9 @@ export const Category = () => {
     const [params, setParams] = useState<DefaultParamsType>(defaultParams)
 
     useEffect(() => {
-        if (!id) return
-        setParams({...defaultParams, categoryId: id})
-    }, [id]);
+        if (!newId) return
+        setParams({...defaultParams, categoryId: newId})
+    }, [newId]);
 
     const {data, isLoading, isSuccess} = useGetProductsQuery(params)
 
@@ -65,7 +65,7 @@ export const Category = () => {
                     <input type="number" name="price_max" onChange={handleChange} placeholder="0"
                            value={values.price_max}/>
                 </div>
-                <button type="submit" hidden></button>
+                <button type="submit" hidden/>
             </form>
             {isLoading ? (
                 <div className="preloader">Loading...</div>
