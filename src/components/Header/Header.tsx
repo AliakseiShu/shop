@@ -20,7 +20,7 @@ export const Header = () => {
     const dispatch = useAppDispatch()
     const navigate = useNavigate()
 
-    const {currentUser} = useAppSelector(({user}) => user)
+    const {currentUser, cart} = useAppSelector(({user}) => user)
 
     const [searchValue, setSearchValue] = useState('');
     const [values, setValues] = useState<ValuesType>({
@@ -73,7 +73,7 @@ export const Header = () => {
                                value={searchValue}/>
                     </div>
                     {searchValue && <div className={styles.box}>
-                        {isLoading ? 'Loading' : !data?.length ? "No results" : data.map((id:string,images:string,title:string) => {
+                        {isLoading ? 'Loading' : !data?.length ? "No results" : data.map((id: string, images: string, title: string) => {
                             return (
                                 <Link key={id} onClick={() => setSearchValue('')} className={styles.item}
                                       to={`/products/${id}`}>
@@ -85,7 +85,6 @@ export const Header = () => {
                             )
                         })}
                     </div>}
-
                 </form>
                 <div className={styles.account}>
                     <Link to={ROUTES.HOME} className={styles.favourites}>
@@ -93,7 +92,7 @@ export const Header = () => {
                     </Link>
                     <Link to={ROUTES.CART} className={styles.cart}>
                         <BiCart/>
-                        <span className={styles.count}>2</span>
+                        {!!cart.length && (<span className={styles.count}>{cart.length}</span>)}
                     </Link>
                 </div>
             </div>

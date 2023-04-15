@@ -1,5 +1,5 @@
 import React from 'react';
-import {useAppSelector} from "../../hook";
+import {useAppDispatch, useAppSelector} from "../../hook";
 
 import styles from '../../styles/Cart.module.css';
 
@@ -8,10 +8,20 @@ import {AiOutlinePlus} from "@react-icons/all-files/ai/AiOutlinePlus";
 import {AiOutlineDelete} from "@react-icons/all-files/ai/AiOutlineDelete";
 
 import {sumBy} from "../../utils/common";
+import {IProduct} from "../Products/Products";
+import {addItemToCart, removeItemFromCart} from "../../features/user/userSlice";
 
 export const Cart = () => {
+    const dispatch = useAppDispatch()
     const {cart} = useAppSelector(({user}) => user)
-    console.log(cart)
+
+    const changeQuantity = (item:IProduct, quantity: number) => {
+        dispatch(addItemToCart({...item, quantity}))
+    }
+    const removeCart = (id:number) => {
+        dispatch(removeItemFromCart(id))
+    }
+
     return (
         <section className={styles.cart}>
             <h2 className={styles.title}>Your cart</h2>
@@ -32,14 +42,16 @@ export const Cart = () => {
                                 </div>
                                 <div className={styles.price}>{price}$</div>
                                 <div className={styles.quantity}>
-                                    <div className={styles.minus}>
+                                    <div className={styles.minus}
+                                         onClick={()=>changeQuantity(item, Math.max(1, quantity - 1))}>
                                         <div className="icon">
                                             <AiOutlineMinus/>
                                         </div>
                                     </div>
                                     <span>{quantity}</span>
 
-                                    <div className={styles.plus}>
+                                    <div className={styles.plus}
+                                         onClick={()=>changeQuantity(item, Math.max(1, quantity + 1))}>
                                         <div className="icon">
                                             <AiOutlinePlus/>
                                         </div>
@@ -47,7 +59,7 @@ export const Cart = () => {
                                 </div>
                                 <div className={styles.total}>{price * quantity}$</div>
                                 <div className={styles.close}>
-                                    <div className="icon">
+                                    <div className="icon" onClick={()=>removeCart(item.id)}>
                                         <AiOutlineDelete/>
                                     </div>
                                 </div>
