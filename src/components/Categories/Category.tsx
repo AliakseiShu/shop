@@ -4,10 +4,13 @@ import {useParams} from "react-router-dom";
 import styles from '../../styles/Category.module.css';
 
 import {useGetProductsQuery} from "../../features/api/apiSlice";
-import {Products} from "../Products/Products";
+import {IProduct, Products} from "../Products/Products";
+import {useAppSelector} from "../../hook";
 
 type DefaultParamsType = {
     categoryId?: string,
+    limit: number,
+    offset: number,
 }
 type DefaultValuesType = {
     title: string,
@@ -17,8 +20,9 @@ type DefaultValuesType = {
 
 export const Category = () => {
     const {id} = useParams()
+    const {list} = useAppSelector(({categories}) => categories)
 
- let newId = (id?.replace(/[^0-9]/g,""))
+    let newId = (id?.replace(/[^0-9]/g, ""))
 
     const defaultValues = {
         title: '',
@@ -28,21 +32,38 @@ export const Category = () => {
 
     const defaultParams = {
         categoryId: newId,
+        limit: 5,
+        offset: 0,
         ...defaultValues,
     }
 
-    const [values, setValues] = useState<DefaultValuesType>(defaultValues);
+    const [cat, setCat] = useState("")
+    const [items, setItems] = useState<IProduct[]>([])
+    const [values, setValues] = useState<DefaultValuesType>(defaultValues)
     const [params, setParams] = useState<DefaultParamsType>(defaultParams)
+
+    const {data = [], isLoading, isSuccess} = useGetProductsQuery(params)
 
     useEffect(() => {
         if (!newId) return
         setParams({...defaultParams, categoryId: newId})
     }, [newId]);
 
-    const {data, isLoading, isSuccess} = useGetProductsQuery(params)
+    useEffect(() => {
+        if (!id || !list.length) return
+        const category = list.find((item) => item.id === Number(newId))
+        category && setCat(category.name)
+    }, [list, id]);
+
+    useEffect(() => {
+        if (isLoading || !data.length) return
+        setItems((_items: any) => [..._items, ...data])
+    }, [data, isLoading]);
+    console.log("items",items)
 
     const handleChange = (e: ChangeEvent<HTMLInputElement> | any) => {
-        setValues(e.target.value)
+        const {target: {name, value}} = e
+        setValues({...values, [name]: value})
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -51,7 +72,7 @@ export const Category = () => {
     }
     return (
         <section className={styles.wrapper}>
-            <h2 className={styles.title}>{values.title}</h2>
+            <h2 className={styles.title}>{cat}</h2>
             <form className={styles.filters} onSubmit={handleSubmit}>
                 <div className={styles.filter}>
                     <input type="text" name="title" onChange={handleChange} placeholder="Product name"
@@ -75,9 +96,14 @@ export const Category = () => {
                     <button>Reset</button>
                 </div>
             ) : <Products title=""
-                          products={data}
+                          products={items}
                           style={{padding: 0}}
-                          amount={data.length}/>}
+                          amount={items.length}/>}
+            <div className={styles.more}>
+                <button onClick={() => setParams({...params, offset: params.offset + params.limit})}>
+                    See more
+                </button>
+            </div>
         </section>
     );
 };

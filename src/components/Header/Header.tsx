@@ -73,10 +73,11 @@ export const Header = () => {
                                value={searchValue}/>
                     </div>
                     {searchValue && <div className={styles.box}>
-                        {isLoading ? 'Loading' : !data?.length ? "No results" : data.map(({title, images, id}) => {
+                        {isLoading ? 'Loading' : !data?.length ? "No results" : data.map((id:string,images:string,title:string) => {
                             return (
-                                <Link key={id} onClick={()=>setSearchValue('')} className={styles.item} to={`/products/${id}`}>
-                                    <div className={styles.image} style={{ backgroundImage:`url(${images[0]})`}}/>
+                                <Link key={id} onClick={() => setSearchValue('')} className={styles.item}
+                                      to={`/products/${id}`}>
+                                    <div className={styles.image} style={{backgroundImage: `url(${images[0]})`}}/>
                                     <div className={styles.title}>
                                         {title}
                                     </div>
